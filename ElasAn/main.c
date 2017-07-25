@@ -188,6 +188,7 @@ int main(int argc, char *argv[]){
 
 	printf("There are %d total points.\n", points);
 	printf("There are %d droplet points.\n", bulk);
+	printf("There are %d droplet points.\n", bulk);
 	//	bulk = 0;
 //	fprintf(file, "\n");
 //	fprintf(file, "POINT_DATA\t%d\n", points);
@@ -200,7 +201,7 @@ int main(int argc, char *argv[]){
 				for (i = 0; i < Nx; i++){
 					l = i + j * Nx + k * Nx * Ny;
 					div = 0;
-					if(indx[l] == 0 && S_array[l] >= 0.6){
+					if(indx[l] == 0 && S_array[l] >= (S-0.2)){
 						xm = peri(i - 1, 0) + j * Nx + k * Nx * Ny;
 						xp = peri(i + 1, 0) + j * Nx + k * Nx * Ny;
 						ym = i + peri(j - 1, 1) * Nx + k * Nx * Ny;
@@ -267,7 +268,7 @@ int main(int argc, char *argv[]){
 	FILE* elas;
 	elas = fopen("elas.out", "w");
 	double tot = splay + twist + bend;
-	printf("\nN\tq\tSplay\ttwist\tbend\ttot\tr_splay\tr_twist\tr_bend\n%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\n", N, qch, splay, twist, bend, tot, splay/tot, twist/tot, bend/tot);
+	printf("\nN\tq\tSplay\ttwist\tbend\ttot\tr_splay\tr_twist\tr_bend\n%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\n\n\n", N, qch, splay, twist, bend, tot, splay/tot, twist/tot, bend/tot);
 	fprintf(elas, "\nN\tq\tSplay\ttwist\tbend\ttot\tr_splay\tr_twist\tr_bend\n%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\n", N, qch, splay, twist, bend, tot, splay/tot, twist/tot, bend/tot);
 	fclose(elas);
 //	fclose(file);

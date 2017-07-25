@@ -68,6 +68,7 @@ bool norm_v(double* vec){
 int main(int argc, char *argv[]){
 	float a[9] = {0};
 	float v[3] = {0};
+	double Q[6] = {0};
 	bool flag = true;
 	int i, j, k, l, n;
 	int info;
@@ -96,22 +97,22 @@ int main(int argc, char *argv[]){
 	double N;
 	FILE* param;
 	param = fopen("param.in", "r");
+	if(param == (FILE*)NULL){
+		printf("File param.in not found.\n");
+		return 1;
+	}
 	fscanf(param, "Nx %d\n", &Nx);
 	fscanf(param, "Ny %d\n", &Ny);
 	fscanf(param, "Nz %d\n", &Nz);
-	fscanf(param,"Lx %lf\n", &Lx);
-	fscanf(param,"Ly %lf\n", &Ly);
-	fscanf(param,"Lz %lf\n", &Lz);
-	fscanf(param,"W %lf\n", &W);
-	fscanf(param,"U %lf\n", &U);
-	fscanf(param,"L1 %lf\n", &L1);
-	fscanf(param,"L2 %lf\n", &L2);
-	fscanf(param,"chiral %d\n", &chiral);
-	fscanf(param,"N %lf\n", &N);
+	fscanf(param, "Lx %lf\n", &Lx);
+	fscanf(param, "Ly %lf\n", &Ly);
+	fscanf(param, "Lz %lf\n", &Lz);
+	fscanf(param, "W %lf\n", &W);
+	fscanf(param, "U %lf\n", &U);
 	fclose(param);
 	points = Nx * Ny * Nz;
-	int D = Nx - 4;
-	double qch = PI * N / 2.0 / D;
+	double qch = 0;
+//	double qch = PI * N / 2.0 / D;
 	double S = 0.25 * (1 + 3 * sqrt(1 - 8.0 / (3 * U)));
 	printf("Seq is %lf.\n", S);
 //	printf("qch is %lf.\n", qch);
@@ -141,9 +142,7 @@ int main(int argc, char *argv[]){
 		printf("File grid.bin not found.\n");
 		return 1;
 	}
-	for(i = 0; i < points; i++){
-		fread(&indx[i], sizeof(int), 1, grid);
-	}
+	fread(indx, sizeof(int), points, grid);
 	fclose(grid);
 
 
@@ -155,12 +154,13 @@ int main(int argc, char *argv[]){
 	}
 	for(i = 0; i < points; i++){
 		if(indx[i] == 0 || indx[i] == 1) {
-			fread(&a[0], sizeof(float), 1, qtensor);	
-			fread(&a[3], sizeof(float), 1, qtensor);	
-			fread(&a[6], sizeof(float), 1, qtensor);	
-			fread(&a[4], sizeof(float), 1, qtensor);	
-			fread(&a[7], sizeof(float), 1, qtensor);	
-			fread(&a[8], sizeof(float), 1, qtensor);	
+			fread(Q, sizeof(double), 6, qtensor);
+			a[0] = (float)Q[0];	
+			a[3] = (float)Q[1];	
+			a[6] = (float)Q[2];	
+			a[4] = (float)Q[3];	
+			a[7] = (float)Q[4];	
+			a[8] = (float)Q[5];	
 			info = LAPACKE_ssyev(LAPACK_COL_MAJOR, 'v', 'u', 3, a, 3, v);
 			if (info > 0) {
 				printf("Error in eigenvalue routine!\n");

@@ -1,0 +1,12 @@
+#! /bin/bash
+
+i=1
+for ((x=204; x<=224; x=x+4))
+do
+	cd x$x
+	~/midway/LC/ElasAn/splay
+	mv elas.out ../e$x.out
+	cd ..
+	tail -1 e$x.out >> elas.out
+done
+

@@ -78,6 +78,10 @@ int main(int argc, char *argv[]){
 
 	FILE* param;
 	param = fopen("param.in", "r");
+	if(param == (FILE*)NULL){
+		printf("File param.in not found.\n");
+		return 1;
+	}
 	fscanf(param, "Nx %d\n", &Nx);
 	fscanf(param, "Ny %d\n", &Ny);
 	fscanf(param, "Nz %d\n", &Nz);

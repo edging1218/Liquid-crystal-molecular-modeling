@@ -139,9 +139,7 @@ int main(int argc, char *argv[]){
 		printf("File grid.bin not found.\n");
 		return 1;
 	}
-	for(i = 0; i < points; i++){
-		fread(&indx[i], sizeof(int), 1, grid);
-	}
+	fread(indx, sizeof(int), points, grid);
 	fclose(grid);
 
 	FILE* qtensor;
@@ -152,9 +150,7 @@ int main(int argc, char *argv[]){
 	}
 	for(i = 0; i < points; i++){
 		if(indx[i] == 0 || indx[i] == 1){
-			for(n = 0; n < 6; n ++){
-				fread(&q[i * 6 + n], sizeof(double), 1, qtensor);
-			}	
+			fread(q[i * 6], sizeof(double), 6, qtensor);
 		}
 	}
 	fclose(qtensor);

@@ -4,17 +4,30 @@
 #include <math.h>
 #include "mkl.h"
 
-
-
-int main(int argc, char *argv[]){
+bool decomposition(double *Qloc, float* S, float* dir, int idx){
+	int info;
 	float a[9] = {0};
 	float v[3] = {0};
-	int flag;
-	int i, n, j, k, l;
-	int info;
+	a[0] = (float)Qloc[0];
+	a[3] = (float)Qloc[1];
+	a[6] = (float)Qloc[2];
+	a[4] = (float)Qloc[3];
+	a[7] = (float)Qloc[4];
+	a[8] = (float)Qloc[5];
+	info = LAPACKE_ssyev(LAPACK_COL_MAJOR, 'v', 'u', 3, a, 3, v);
+	if (info > 0) {
+		printf("Error in eigenvalue routine!\n");
+		return false;
+	}
+	S[idx] = 0.5 * 3 * v[2];
+	dir[idx] = a[8];
+	return true;
+}
+
+int main(int argc, char *argv[]){
+	int i, j, k, l;
 	int points;
 	int Nx, Ny, Nz;
-	float x, y, z;
 
 	//Read in parameter
 	FILE* param;
@@ -77,49 +90,19 @@ int main(int argc, char *argv[]){
 				if(indx == 0 || indx == 1){
 					fread(Qloc, sizeof(double), 6, qtensor);
 					if(k == rz && j == ry){
-						a[0] = (float)Qloc[0];
-						a[3] = (float)Qloc[1];
-						a[6] = (float)Qloc[2];
-						a[4] = (float)Qloc[3];
-						a[7] = (float)Qloc[4];
-						a[8] = (float)Qloc[5];
-						info = LAPACKE_ssyev(LAPACK_COL_MAJOR, 'v', 'u', 3, a, 3, v);
-						if (info > 0) {
-							printf("Error in eigenvalue routine!\n");
+						if(!decomposition(Qloc, S_array_x, TwAn_x, i)){
 							return 1;
 						}
-						S_array_x[i] = 0.5 * 3 * v[2];
-						TwAn_x[i] = a[8];
 					}
 					if(i == rx && j == ry){
-						a[0] = (float)Qloc[0];
-						a[3] = (float)Qloc[1];
-						a[6] = (float)Qloc[2];
-						a[4] = (float)Qloc[3];
-						a[7] = (float)Qloc[4];
-						a[8] = (float)Qloc[5];
-						info = LAPACKE_ssyev(LAPACK_COL_MAJOR, 'v', 'u', 3, a, 3, v);
-						if (info > 0) {
-							printf("Error in eigenvalue routine!\n");
+						if(!decomposition(Qloc, S_array_z, TwAn_z, k)){
 							return 1;
 						}
-						S_array_z[i] = 0.5 * 3 * v[2];
-						TwAn_z[i] = a[8];
 					}
 					if(k == rz && i == rx){
-						a[0] = (float)Qloc[0];
-						a[3] = (float)Qloc[1];
-						a[6] = (float)Qloc[2];
-						a[4] = (float)Qloc[3];
-						a[7] = (float)Qloc[4];
-						a[8] = (float)Qloc[5];
-						info = LAPACKE_ssyev(LAPACK_COL_MAJOR, 'v', 'u', 3, a, 3, v);
-						if (info > 0) {
-							printf("Error in eigenvalue routine!\n");
+						if(!decomposition(Qloc, S_array_y, TwAn_y, j)){
 							return 1;
 						}
-						S_array_y[i] = 0.5 * 3 * v[2];
-						TwAn_y[i] = a[8];
 					}
 				}
 
@@ -146,6 +129,7 @@ int main(int argc, char *argv[]){
 		fprintf(file, "%d %f %f\n", i, S_array_z[i], fabs(TwAn_z[i]));
 	}	
 	fclose(file);
+
 	//free 
 	free(S_array_x);
 	free(S_array_y);

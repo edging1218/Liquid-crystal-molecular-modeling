@@ -118,13 +118,6 @@ int main(int argc, char *argv[]){
 		}
 	}
 
-	grid = fopen("grid.bin", "rb");
-	if(grid == (FILE*)NULL){
-		printf("File grid.bin not found.\n");
-		return 1;
-	}
-	fread(indx, sizeof(int), points, grid);
-	fclose(grid);
 
 	for(idx = start; idx < movenumber; idx += increment){
 		sprintf(fvtk, "f%05d.vtk", idx);
@@ -141,6 +134,14 @@ int main(int argc, char *argv[]){
 		printf("There are %d points.\n", points_red);
 		fprintf(file, "DIMENSIONS\t %d\t %d\t %d\t\n", Nx2, Ny2, Nz2);
 		fprintf(file, "POINTS\t %d\t float\n", points_red);
+
+		grid = fopen("grid.bin", "rb");
+		if(grid == (FILE*)NULL){
+			printf("File grid.bin not found.\n");
+			return 1;
+		}
+		fread(indx, sizeof(int), points, grid);
+		fclose(grid);
 
 		FILE* qtensor;
 		qtensor = fopen(fQ, "rb");

@@ -150,7 +150,7 @@ int main(int argc, char *argv[]){
 	}
 	for(i = 0; i < points; i++){
 		if(indx[i] == 0 || indx[i] == 1){
-			fread(q[i * 6], sizeof(double), 6, qtensor);
+			fread(&q[i * 6], sizeof(double), 6, qtensor);
 		}
 	}
 	fclose(qtensor);

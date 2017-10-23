@@ -263,7 +263,7 @@ int main(int argc, char *argv[]){
 					copy22(Pold, Pnew);
 				}
 			}
-		 	fprintf(pol, "%lf\t", cabs(Pold[0] - Pold[1] + Pold[2] - Pold[3]) * 0.5);	
+		 	fprintf(pol, "%lf\t", cabs(Pold[1]));	
 		}
 		fprintf(pol, "\n");	
 	}
@@ -298,7 +298,7 @@ int main(int argc, char *argv[]){
 					copy22(Pold, Pnew);
 				}
 			}
-		 	fprintf(pol, "%lf\t", cabs(Pold[0] - Pold[1] + Pold[2] - Pold[3]) * 0.5);	
+		 	fprintf(pol, "%lf\t", cabs(Pold[1]));	
 		}
 		fprintf(pol, "\n");	
 	}
@@ -333,7 +333,7 @@ int main(int argc, char *argv[]){
 					copy22(Pold, Pnew);
 				}
 			}
-		 	fprintf(pol, "%lf\t", cabs(Pold[0] - Pold[1] + Pold[2] - Pold[3]) * 0.5);	
+		 	fprintf(pol, "%lf\t", cabs(Pold[1]));	
 		}
 		fprintf(pol, "\n");	
 	}

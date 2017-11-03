@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+import numpy as np
 start = input('File number start:')
 increment = input('File number increment:')
 end = input('File number end:')
@@ -17,7 +18,8 @@ for num in range(start, end, increment):
         for l in lines:
                 if len(l.split()):
                         polx.append([float(x) for x in l.split()])
-        im = plt.imshow(polx, cmap=plt.get_cmap('Blues'), interpolation='bicubic', vmin=0, vmax=1.5);
+    	polx = np.array(polx).T
+        im = plt.imshow(polx, cmap=plt.get_cmap('bone'), interpolation='bicubic', vmin=0, vmax=1.5);
        # im = plt.imshow(polx, cmap=plt.get_cmap('bone'), interpolation='bicubic', vmax=1.5);
         #plt.colorbar();
         im.axes.get_xaxis().set_visible(False);

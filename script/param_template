@@ -1,0 +1,30 @@
+Nx %(n)s
+Ny %(n)s
+Nz 210
+Lx %(l)s
+Ly %(l)s
+Lz 209
+W 1.2
+U 3.5
+L1 1
+L2 0
+L3 0
+L4 0
+chiral 0
+qch 0
+geo 9
+p 3
+degenerate 0
+infinite 0
+Np 0
+Rp %(r)s
+Wp 1.2
+seed 1
+rand_seed 
+tmin tmax 0.1 0.1
+increment 100000
+accuracy 1e-5
+init_dir 0 0 1
+dir1 0 0 1
+dir2 0 0 1
+

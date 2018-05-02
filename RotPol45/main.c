@@ -85,10 +85,14 @@ void init22(double complex* A){
 	A[3] = 1;
 	return;
 }
+double intensity(double complex* A, double angle){
+	angle = angle * M_PI / 180;
+	return cabs(- A[0] * sin(angle) * cos(angle) - A[1] * sin(angle) * sin(angle) + A[2] * cos(angle) * cos(angle) + A[3] * sin(angle) * cos(angle));
+}
 
 int main(int argc, char *argv[]){
-	printf("Valid input should be ./pol ux uy uz theta lambda.\n");	
-	if(argc != 1 && argc != 2 && argc != 5 && argc != 6){
+	printf("Valid input should be ./pol ux uy uz theta lambda angle.\n");	
+	if(argc != 1 && argc != 2  && argc != 3&& argc != 5 && argc != 6){
 		printf("Invalid input.\n");
 		return 1;
 	}
@@ -100,6 +104,7 @@ int main(int argc, char *argv[]){
 	int Nx, Ny, Nz;
 	int x, y, z;
 	double Q[6] = {0};
+	double angle = 90;
 
 	FILE* param;
 	param = fopen("param.in", "r");
@@ -224,12 +229,16 @@ int main(int argc, char *argv[]){
 	ne = 1.7;
 	dmesh = 1;
 	lambda = 20;
-	if(argc == 2){
+	if(argc == 2 || argc == 3){
 		lambda = strtod(argv[1], NULL);
 	} 
 	else if(argc == 6){
 		lambda = strtod(argv[5], NULL);
 	}
+	if(argc == 3){
+		lambda = strtod(argv[1], NULL);
+		angle = atof(argv[2]);
+	} 
 	double complex Pold[4], Pnew[4];
 	double complex SR[4];
 	pol = fopen("polz.out", "w");
@@ -263,7 +272,7 @@ int main(int argc, char *argv[]){
 					copy22(Pold, Pnew);
 				}
 			}
-		 	fprintf(pol, "%lf\t", cabs(Pold[0] - Pold[1] + Pold[2] - Pold[3]) * 0.5);	
+		 	fprintf(pol, "%lf\t", intensity(Pold, angle));
 		}
 		fprintf(pol, "\n");	
 	}
@@ -298,7 +307,7 @@ int main(int argc, char *argv[]){
 					copy22(Pold, Pnew);
 				}
 			}
-		 	fprintf(pol, "%lf\t", cabs(Pold[0] - Pold[1] + Pold[2] - Pold[3]) * 0.5);	
+		 	fprintf(pol, "%lf\t", intensity(Pold, angle));
 		}
 		fprintf(pol, "\n");	
 	}
@@ -333,7 +342,7 @@ int main(int argc, char *argv[]){
 					copy22(Pold, Pnew);
 				}
 			}
-		 	fprintf(pol, "%lf\t", cabs(Pold[0] - Pold[1] + Pold[2] - Pold[3]) * 0.5);	
+		 	fprintf(pol, "%lf\t", intensity(Pold, angle));
 		}
 		fprintf(pol, "\n");	
 	}
